@@ -1,0 +1,261 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+ 
+  <groupId>eduardomhg</groupId>
+  <artifactId>base-pom</artifactId>
+  <version>0.2.1</version>
+  <packaging>pom</packaging>
+  
+  <properties>
+    <maven.version>3.3.3</maven.version> <!-- Minimum Maven version (enforced) -->
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding> <!-- Prevents a Maven Warning about encoding -->    
+  </properties>  
+    
+  <build>
+    <pluginManagement>
+      <plugins>
+      
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>exec-maven-plugin</artifactId>
+          <version>1.4.0</version>         
+        </plugin>  
+        
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>build-helper-maven-plugin</artifactId>
+          <version>1.9.1</version>
+          <executions>
+            <execution>
+              <id>parse-version</id>
+              <goals>
+                <goal>parse-version</goal>
+              </goals>
+            </execution>          
+          </executions>
+        </plugin>          
+        
+        <!-- This is a modified INTERNAL version of the release plugin that
+        pins the external revision when tagging. -->
+        <plugin>
+          <groupId>eduardomhg.plugins</groupId>
+          <artifactId>maven-release-plugin</artifactId>
+          <version>2.5.4</version>
+        </plugin>        
+        
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>buildnumber-maven-plugin</artifactId>
+          <version>1.3</version>
+          <executions>
+            <execution>
+              <phase>validate</phase>
+              <goals>
+                <goal>create</goal>
+              </goals>
+            </execution>
+          </executions>
+          <configuration>
+            <doCheck>false</doCheck>
+            <doUpdate>false</doUpdate>
+          </configuration>          
+        </plugin>          
+                
+        
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-enforcer-plugin</artifactId>
+          <version>1.4.1</version>
+        </plugin>
+        <!--
+            the versions plugin can be used to check for new plugin versions like this:
+            mvn versions:display-plugin-updates
+         -->
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>versions-maven-plugin</artifactId>
+          <version>2.2</version>
+        </plugin>        
+        
+        
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-jar-plugin</artifactId>
+          <version>2.6</version>
+          <executions>
+            <execution>
+              <id>default-jar</id>
+              <phase>never</phase>
+              <configuration>
+                <finalName>unwanted</finalName>
+                <classifier>unwanted</classifier>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>
+      
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-install-plugin</artifactId>
+          <version>2.5.2</version>
+          <executions>
+            <execution>
+              <id>default-install</id>
+              <phase>never</phase>
+              <configuration>
+                <finalName>unwanted</finalName>
+                <classifier>unwanted</classifier>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>        
+        
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-resources-plugin</artifactId>
+          <version>2.6</version>
+          <executions>
+            <execution>
+              <id>default-resources</id>
+              <phase>never</phase>
+              <configuration>
+                <finalName>unwanted</finalName>
+                <classifier>unwanted</classifier>
+              </configuration>
+            </execution>
+            <execution>
+              <id>default-testResources</id>
+              <phase>never</phase>
+              <configuration>
+                <finalName>unwanted</finalName>
+                <classifier>unwanted</classifier>
+              </configuration>
+            </execution>            
+          </executions>
+        </plugin>  
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>3.1</version>
+          <executions>
+            <execution>
+              <id>default-compile</id>
+              <phase>never</phase>
+              <configuration>
+                <finalName>unwanted</finalName>
+                <classifier>unwanted</classifier>
+              </configuration>
+            </execution>
+            <execution>
+              <id>default-testCompile</id>
+              <phase>never</phase>
+              <configuration>
+                <finalName>unwanted</finalName>
+                <classifier>unwanted</classifier>
+              </configuration>
+            </execution>            
+          </executions>
+        </plugin>  
+        
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>2.12</version>
+          <executions>
+            <execution>
+              <id>default-test</id>
+              <phase>never</phase>
+              <configuration>
+                <finalName>unwanted</finalName>
+                <classifier>unwanted</classifier>
+              </configuration>
+            </execution>
+          </executions>            
+        </plugin>         
+        
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-clean-plugin</artifactId>
+          <version>2.6.1</version>
+        </plugin>      
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-deploy-plugin</artifactId>
+          <version>2.8.2</version>
+        </plugin>         
+        
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-site-plugin</artifactId>
+          <version>3.4</version>
+        </plugin>         
+        
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <version>2.10</version>
+      </plugin>        
+      
+      </plugins>
+    </pluginManagement>
+    
+    
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>enforce-maven</id>
+            <goals>
+              <goal>enforce</goal>
+            </goals>
+            <configuration>
+              <rules>
+                <requireMavenVersion>
+                  <version>[${maven.version},)</version>
+                  <message>Check for Maven version &gt;=${maven.version} failed. Update your Maven install.</message>
+                </requireMavenVersion>
+                <requireProperty>
+                  <property>project.version</property>
+                  <message>"Project version must be specified."</message>
+                  <regex>.*([a-zA-Z\d]|-SNAPSHOT)$</regex>
+                  <regexMessage>Project version must end in a number or -SNAPSHOT.</regexMessage>
+                </requireProperty>     
+                <bannedPlugins>
+                  <excludes>
+                    <exclude>org.apache.maven.plugins:maven-release-plugin</exclude>
+                  </excludes>
+                </bannedPlugins>                
+              </rules>
+              <failFast>true</failFast>
+            </configuration>
+          </execution>
+        </executions>        
+      </plugin>
+       
+      
+    </plugins>    
+        
+  </build>
+  
+  <prerequisites>
+    <maven>${maven.version}</maven>
+  </prerequisites>
+     
+  <distributionManagement>
+    <repository>
+       <id>nexus</id>
+       <name>Releases</name>
+       <url>http://ah028214:8054/nexus/content/repositories/releases/</url>
+    </repository>
+    <snapshotRepository>
+       <id>nexus</id>
+       <name>Snapshots</name>
+       <url>http://ah028214:8054/nexus/content/repositories/snapshots/</url>
+    </snapshotRepository>
+  </distributionManagement>
+  
+</project>

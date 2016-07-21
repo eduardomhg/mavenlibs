@@ -1,0 +1,193 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+ 
+  <groupId>eduardomhg</groupId>
+  <artifactId>package-pom</artifactId>
+  <version>0.1.0</version>
+  <packaging>pom</packaging>
+  
+  <parent>
+    <groupId>eduardomhg</groupId>
+    <artifactId>base-pom</artifactId>
+    <version>0.1.22</version>
+  </parent>  
+    
+  <scm>
+    <connection>scm:svn:${svnRepository}/trunk/${svnRelativePath}</connection>
+    <developerConnection>scm:svn:${svnRepository}/trunk/${svnRelativePath}</developerConnection>
+  </scm>  
+  
+  <build>    
+    <pluginManagement>
+      <plugins>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-dependency-plugin</artifactId>
+          <executions>
+            <execution>
+              <id>copy-binaries</id>
+              <phase>validate</phase>
+              <goals>
+                <goal>purge-local-repository</goal>
+                <goal>copy-dependencies</goal>
+              </goals>
+              <configuration>
+                <outputDirectory>${tempDirectory}</outputDirectory>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>      
+        
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>exec-maven-plugin</artifactId>
+         
+          <executions>
+            <execution>
+              <id>package-binaries</id>
+              <phase>package</phase>
+              <goals>
+                <goal>exec</goal>
+              </goals>
+              <configuration>
+                <executable>${packageCommand}</executable>
+                <commandlineArgs>${packageCommandArgs}</commandlineArgs>
+              </configuration>
+            </execution>	
+
+            <execution>
+              <id>clean</id>
+              <phase>clean</phase>
+              <goals>
+                <goal>exec</goal>
+              </goals>
+              <configuration>
+                <executable>${cleanCommand}</executable>
+                <commandlineArgs>${cleanCommandArgs}</commandlineArgs>
+              </configuration>
+            </execution>			
+            
+          </executions>
+        </plugin>      
+        
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>build-helper-maven-plugin</artifactId>
+          <executions>
+          
+            <execution>
+              <id>attach-artifacts</id>
+              <phase>package</phase>
+              <goals>
+                <goal>attach-artifact</goal>
+              </goals>
+              <configuration>
+                <artifacts>
+                  <artifact>
+                    <file>${artifactFile}</file>
+                    <type>${artifactExtension}</type>
+                    <classifier>${artifactClassifier}</classifier>
+                  </artifact>
+                </artifacts>
+              </configuration>
+            </execution>
+            
+          </executions>
+        </plugin>      
+                          
+                
+      </plugins>    
+    
+    </pluginManagement>    
+        
+  </build>        
+   
+  <profiles>
+    <profile>
+      <id>default-package</id>
+      <activation>
+        <file>
+          <missing>package-pom.xml</missing>
+        </file>
+      </activation>
+      <build>    
+        <plugins>     
+                
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+          </plugin>
+
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-release-plugin</artifactId>
+          </plugin>
+          
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>build-helper-maven-plugin</artifactId>
+          </plugin>
+          
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>buildnumber-maven-plugin</artifactId>
+          </plugin>           
+
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-dependency-plugin</artifactId>
+          </plugin>             
+                
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-enforcer-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>enforce-properties</id>
+                <goals>
+                  <goal>enforce</goal>
+                </goals>
+                <configuration>
+                  <rules>
+                    <requireProperty>
+                      <property>tempDirectory</property>
+                      <message>You must set the tempDirectory property with the path to the temporary directory used to copy binaries.</message>                  
+                    </requireProperty>
+                    <requireProperty>
+                      <property>packageCommand</property>
+                      <message>You must set the packageCommand property with the command that does the packaging (with no arguments).</message>                  
+                    </requireProperty>          
+                    <requireProperty>
+                      <property>packageCommandArgs</property>
+                      <message>You must set the packageCommandArgs property with the package command arguments.</message>                  
+                    </requireProperty>                
+                    <requireProperty>
+                      <property>cleanCommand</property>
+                      <message>You must set the cleanCommand property with the command that does the cleaning (with no arguments).</message>                  
+                    </requireProperty>          
+                    <requireProperty>
+                      <property>cleanCommandArgs</property>
+                      <message>You must set the cleanCommandArgs property with the clean command arguments.</message>                  
+                    </requireProperty>                  
+                    <requireProperty>
+                      <property>artifactFile</property>
+                      <message>You must set the artifactFile property with the relative path to the generated artifact.</message>                  
+                    </requireProperty>                  
+                    <requireProperty>
+                      <property>artifactExtension</property>
+                      <message>You must set the artifactExtension property with the extension of generated artifact.</message>                  
+                    </requireProperty>                     
+                  </rules>
+                  <failFast>true</failFast>
+                </configuration>
+              </execution>
+            </executions>            
+          </plugin>                 
+                  
+        </plugins>       
+            
+      </build>      
+    </profile>
+  </profiles>    
+</project>
