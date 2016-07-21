@@ -1,0 +1,95 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+ 
+  <groupId>eduardomhg</groupId>
+  <artifactId>gen2-system</artifactId>
+  <version>0.3.0</version>
+  
+  <parent>
+    <groupId>eduardomhg</groupId>
+    <artifactId>base-pom</artifactId>
+    <version>0.2.1</version>
+  </parent> 
+
+  <dependencies>
+    <dependency>
+      <groupId>eduardomhg</groupId>
+      <artifactId>artifact1</artifactId>
+      <version>0.1.0</version>
+      <type>type1</type>               
+    </dependency>
+    <dependency>
+      <groupId>eduardomhg</groupId>
+      <artifactId>artifact2</artifactId>
+      <version>0.1.0</version>
+      <type>type2</type>               
+    </dependency>    
+  </dependencies>
+
+  <build>        
+    <plugins>
+    
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>copy-binaries</id>
+            <phase>validate</phase>
+            <goals>
+              <goal>purge-local-repository</goal>
+              <goal>copy-dependencies</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>SOMEOUTPUTDIRECTORY</outputDirectory>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+                      
+  	  <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>default-compile</id>
+            <phase>compile</phase>
+            <goals>
+              <goal>exec</goal>
+            </goals>
+            <configuration>
+              <executable>python</executable>
+              <arguments>
+                <argument>SOMEARGUMENT</argument>
+              </arguments>
+            </configuration>
+          </execution>			
+        </executions>
+      </plugin>
+      
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <executions>    
+          <execution>
+            <id>attach-artifacts</id>
+            <phase>package</phase>
+            <goals>
+              <goal>attach-artifact</goal>
+            </goals>
+            <configuration>
+              <artifacts>
+                <artifact>
+                  <file>THEOUTPUTPACKAGE</file>
+                  <type>zip</type>
+                </artifact>
+              </artifacts>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+            
+    </plugins>  
+  </build>  
+  
+</project>
